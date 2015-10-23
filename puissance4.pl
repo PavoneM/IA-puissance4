@@ -25,12 +25,15 @@ testVertical([_|Q],J):- testVertical(Q,J).
 % Afficher le symbole du joueur gagnant
 affiche_gagnant(J) :- write('Le Joueur '), write(J), write(' a gagné !').
 
-
 joueur1(G) :- testVertical(G, x), !.
 joueur2(G) :- testVertical(G, o), !.
 
-joueur1(G) :- write('Joueur X, entrez un numéro de colonne : '), read(N), joueur2(G).
-joueur2(G) :- write('Joueur O, entrez un numéro de colonne : '), read(N), joueur1(G).
+joueur1(G) :- write('Joueur X, quelle colonne ?   '), read(Colonne), etat(G, Colonne, x, NouvelleGrille), write(NouvelleGrille), joueur2(NouvelleGrille).
+joueur2(G) :- write('Joueur O, quelle colonne ?   '), read(Colonne), etat(G, Colonne, o, NouvelleGrille), write(NouvelleGrille), joueur1(NouvelleGrille).
+
+% Ajouter un nouvel etat
+etat([T|Q], 1, Joueur, [[Joueur|T]|Q]).
+etat([T|Q], Colonne, Joueur, [T|X]) :- Colonne > 0, Compteur is Colonne-1, etat(Q, Compteur, Joueur, X).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Action à excécuter pour lancer la partie
